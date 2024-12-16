@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private float vSpeed;
     [SerializeField] private GameObject sprite;
     [SerializeField] private GameObject puncher;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private float puncherSpecialForce;
     [SerializeField] private GameObject kicker;
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private float cooldown;
@@ -30,6 +33,8 @@ public class PlayerBehavior : MonoBehaviour
         isPunching = false;
         isKicking = false;
         healthCooldownStore = healthCooldown;
+        //_slider = GetComponent<Slider>();
+        _slider.value = health;
     }
 
 
@@ -40,6 +45,11 @@ public class PlayerBehavior : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+            Destroy(_slider);
+        }
+        if (health >= 4)
+        {
+            health = 4;
         }
 
         healthCooldown -= Time.deltaTime;
@@ -55,13 +65,13 @@ public class PlayerBehavior : MonoBehaviour
 
         _rb2D.velocity = new Vector2(xAxis * vSpeed, yAxis * hSpeed);
 
-        if (Input.GetKey(KeyCode.L) && !isKicking)
+        if (Input.GetKeyDown(KeyCode.L) && !isKicking)
         {
 
             isPunching = true;
 
         }
-        else if (Input.GetKey(KeyCode.K) && !isPunching) {
+        else if (Input.GetKeyDown(KeyCode.K) && !isPunching) {
 
             isKicking = true;
         
@@ -71,7 +81,16 @@ public class PlayerBehavior : MonoBehaviour
         {
             sprite.SetActive(false);
             puncher.SetActive(true);
-            
+
+            if (_rb2D.velocity.x >= 2f)
+            {
+                _rb2D.AddForce(Vector2.right * puncherSpecialForce);
+            }
+            else if (_rb2D.velocity.x <= -2f)
+            {
+                _rb2D.AddForce(Vector2.left * puncherSpecialForce);
+            }
+
             cooldown -= Time.deltaTime;
 
             if (cooldown <= 0f)
@@ -90,6 +109,8 @@ public class PlayerBehavior : MonoBehaviour
             kicker.SetActive(true);
 
             cooldown -= Time.deltaTime;
+
+            _rb2D.velocity = Vector2.zero;
 
             if (cooldown <= 0f)
             {
@@ -120,14 +141,20 @@ public class PlayerBehavior : MonoBehaviour
 
             minDistance = Vector2.Distance(collision.transform.position, transform.position);
 
-            if (minDistance <= 0.2f)
+            if (minDistance <= 0.3f)
             {
-                if (healthCooldown <= 0f)
+                if (healthCooldown <= 0f && _rb2D.velocity.x > 2f)
                 {
                     health--;
+                    _slider.value = health;
                     healthCooldown = healthCooldownStore;
                 }
             }
+        }
+
+        if (collision.CompareTag("Spike"))
+        {
+            health = 0;
         }
     }
 

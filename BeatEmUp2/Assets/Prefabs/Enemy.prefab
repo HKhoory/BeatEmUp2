@@ -52,8 +52,9 @@ MonoBehaviour:
   hSpeed: 1
   vSpeed: 2
   health: 2
-  forceValue: 70
+  forceValue: 150
   spin: {fileID: 5427636342465583322}
+  _sprite: {fileID: 0}
   isPunched: 0
   cooldown: 0.4
 --- !u!50 &4858298372734899530
