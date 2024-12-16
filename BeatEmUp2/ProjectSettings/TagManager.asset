@@ -9,6 +9,7 @@ TagManager:
   - Spike
   - Exit
   - Kick
+  - Candy
   layers:
   - Default
   - TransparentFX
