@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehavior : MonoBehaviour
 {
@@ -141,7 +142,7 @@ public class PlayerBehavior : MonoBehaviour
 
             minDistance = Vector2.Distance(collision.transform.position, transform.position);
 
-            if (minDistance <= 0.3f)
+            if (minDistance <= 0.4f)
             {
                 if (healthCooldown <= 0f && _rb2D.velocity.x > 2f)
                 {
@@ -155,6 +156,10 @@ public class PlayerBehavior : MonoBehaviour
         if (collision.CompareTag("Spike"))
         {
             health = 0;
+        }
+        if (collision.CompareTag("Exit"))
+        {
+            SceneManager.LoadScene(1);
         }
     }
 

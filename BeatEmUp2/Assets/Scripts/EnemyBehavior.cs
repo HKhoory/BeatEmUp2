@@ -37,6 +37,11 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (player == null)
+        {
+            return;
+        }
+
         Vector2 dir = player.transform.position - transform.position;
 
         dir.Normalize();
@@ -84,6 +89,23 @@ public class EnemyBehavior : MonoBehaviour
             }
 
             
+
+        }
+
+        if (collision.CompareTag("Kick"))
+        {
+            isPunched = true;
+            health -= 2;
+            if (transform.position.x < player.transform.position.x)
+            {
+                _rb2D.AddForce(new Vector2(-forceValue - 20, 0));
+            }
+            else
+            {
+                _rb2D.AddForce(new Vector2(forceValue + 20, 0));
+            }
+
+
 
         }
 
