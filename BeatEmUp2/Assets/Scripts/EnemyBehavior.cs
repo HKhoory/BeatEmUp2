@@ -98,11 +98,11 @@ public class EnemyBehavior : MonoBehaviour
             health -= 2;
             if (transform.position.x < player.transform.position.x)
             {
-                _rb2D.AddForce(new Vector2(-forceValue - 20, 0));
+                _rb2D.AddForce(new Vector2(-forceValue - 40, 0));
             }
             else
             {
-                _rb2D.AddForce(new Vector2(forceValue + 20, 0));
+                _rb2D.AddForce(new Vector2(forceValue + 40, 0));
             }
 
 

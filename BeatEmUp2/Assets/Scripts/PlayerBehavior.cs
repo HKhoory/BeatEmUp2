@@ -161,6 +161,11 @@ public class PlayerBehavior : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
+        if (collision.CompareTag("Candy"))
+        {
+            health++;
+            _slider.value = health;
+        }
     }
 
 }
